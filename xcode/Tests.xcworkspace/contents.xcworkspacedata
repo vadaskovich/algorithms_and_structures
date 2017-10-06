@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Workspace
+   version = "1.0">
+   <Group
+      location = "container:"
+      name = "Structures">
+      <FileRef
+         location = "group:BinaryTree_Test/BinaryTree_Test.xcodeproj">
+      </FileRef>
+      <FileRef
+         location = "group:HashTable_Test/HashTable_Test.xcodeproj">
+      </FileRef>
+   </Group>
+   <Group
+      location = "container:"
+      name = "Algorithms">
+      <FileRef
+         location = "group:/Users/bro/Desktop/projects/Algorithms/xcode/SortBubble_Test/Sort_Tests.xcodeproj">
+      </FileRef>
+   </Group>
+</Workspace>
