@@ -8,10 +8,12 @@
 
 /* Begin PBXBuildFile section */
 		1B32038E1F8785120014A7DA /* SortBinaryTree.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1B32038C1F8785120014A7DA /* SortBinaryTree.cpp */; };
+		1B50898D1F8AC1C700810A1C /* BTree.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1B50898C1F8AC1C700810A1C /* BTree.cpp */; };
 		1B7724811F858EEA00D96A4C /* SortBubble.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1B77247B1F858EEA00D96A4C /* SortBubble.cpp */; };
 		1B7724821F858EEA00D96A4C /* SortCocktailShaker.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1B77247D1F858EEA00D96A4C /* SortCocktailShaker.cpp */; };
 		1B7724831F858EEA00D96A4C /* SortInsertion.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1B77247F1F858EEA00D96A4C /* SortInsertion.cpp */; };
 		1B7724881F86C76500D96A4C /* SortMerge.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1B7724861F86C76500D96A4C /* SortMerge.cpp */; };
+		1B9EC3C81F8A566C00F23099 /* SortBtree.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1B9EC3C61F8A566C00F23099 /* SortBtree.cpp */; };
 		1BAD91411F8574FF0052D13B /* Sort_Tests.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1BAD91401F8574FF0052D13B /* Sort_Tests.cpp */; };
 		1BAD914A1F8585F70052D13B /* Counter.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1BAD91481F8585F70052D13B /* Counter.cpp */; };
 /* End PBXBuildFile section */
@@ -31,6 +33,7 @@
 /* Begin PBXFileReference section */
 		1B32038C1F8785120014A7DA /* SortBinaryTree.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = SortBinaryTree.cpp; path = ../../Sources/Algorithms/Sort/SortBinaryTree.cpp; sourceTree = "<group>"; };
 		1B32038D1F8785120014A7DA /* SortBinaryTree.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = SortBinaryTree.hpp; path = ../../Sources/Algorithms/Sort/SortBinaryTree.hpp; sourceTree = "<group>"; };
+		1B50898C1F8AC1C700810A1C /* BTree.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = BTree.cpp; path = /Users/bro/Desktop/projects/Algorithms/xcode/BTree_Test/../../Sources/Structures/BTree/BTree.cpp; sourceTree = "<absolute>"; };
 		1B77247B1F858EEA00D96A4C /* SortBubble.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = SortBubble.cpp; path = ../../Sources/Algorithms/Sort/SortBubble.cpp; sourceTree = "<group>"; };
 		1B77247C1F858EEA00D96A4C /* SortBubble.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = SortBubble.hpp; path = ../../Sources/Algorithms/Sort/SortBubble.hpp; sourceTree = "<group>"; };
 		1B77247D1F858EEA00D96A4C /* SortCocktailShaker.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = SortCocktailShaker.cpp; path = ../../Sources/Algorithms/Sort/SortCocktailShaker.cpp; sourceTree = "<group>"; };
@@ -39,6 +42,8 @@
 		1B7724801F858EEA00D96A4C /* SortInsertion.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = SortInsertion.hpp; path = ../../Sources/Algorithms/Sort/SortInsertion.hpp; sourceTree = "<group>"; };
 		1B7724861F86C76500D96A4C /* SortMerge.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = SortMerge.cpp; path = ../../Sources/Algorithms/Sort/SortMerge.cpp; sourceTree = "<group>"; };
 		1B7724871F86C76500D96A4C /* SortMerge.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = SortMerge.hpp; path = ../../Sources/Algorithms/Sort/SortMerge.hpp; sourceTree = "<group>"; };
+		1B9EC3C61F8A566C00F23099 /* SortBtree.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = SortBtree.cpp; path = ../../Sources/Algorithms/Sort/SortBtree.cpp; sourceTree = "<group>"; };
+		1B9EC3C71F8A566C00F23099 /* SortBtree.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = SortBtree.hpp; path = ../../Sources/Algorithms/Sort/SortBtree.hpp; sourceTree = "<group>"; };
 		1BAD91361F85749D0052D13B /* Sort_Tests */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = Sort_Tests; sourceTree = BUILT_PRODUCTS_DIR; };
 		1BAD91401F8574FF0052D13B /* Sort_Tests.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Sort_Tests.cpp; path = ../../Tests/Sort_Tests.cpp; sourceTree = "<group>"; };
 		1BAD91481F8585F70052D13B /* Counter.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Counter.cpp; path = ../../Sources/Common/Counter.cpp; sourceTree = "<group>"; };
@@ -59,6 +64,7 @@
 		1B7724841F85906100D96A4C /* Algorithms */ = {
 			isa = PBXGroup;
 			children = (
+				1B50898C1F8AC1C700810A1C /* BTree.cpp */,
 				1B77247B1F858EEA00D96A4C /* SortBubble.cpp */,
 				1B77247C1F858EEA00D96A4C /* SortBubble.hpp */,
 				1B77247D1F858EEA00D96A4C /* SortCocktailShaker.cpp */,
@@ -69,6 +75,8 @@
 				1B7724871F86C76500D96A4C /* SortMerge.hpp */,
 				1B32038C1F8785120014A7DA /* SortBinaryTree.cpp */,
 				1B32038D1F8785120014A7DA /* SortBinaryTree.hpp */,
+				1B9EC3C61F8A566C00F23099 /* SortBtree.cpp */,
+				1B9EC3C71F8A566C00F23099 /* SortBtree.hpp */,
 			);
 			name = Algorithms;
 			sourceTree = "<group>";
@@ -158,12 +166,14 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				1B9EC3C81F8A566C00F23099 /* SortBtree.cpp in Sources */,
 				1B32038E1F8785120014A7DA /* SortBinaryTree.cpp in Sources */,
 				1B7724811F858EEA00D96A4C /* SortBubble.cpp in Sources */,
 				1B7724831F858EEA00D96A4C /* SortInsertion.cpp in Sources */,
 				1BAD914A1F8585F70052D13B /* Counter.cpp in Sources */,
 				1BAD91411F8574FF0052D13B /* Sort_Tests.cpp in Sources */,
 				1B7724881F86C76500D96A4C /* SortMerge.cpp in Sources */,
+				1B50898D1F8AC1C700810A1C /* BTree.cpp in Sources */,
 				1B7724821F858EEA00D96A4C /* SortCocktailShaker.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

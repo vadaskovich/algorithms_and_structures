@@ -15,6 +15,10 @@
 // Used as a data type for hash table.
 class HashTableBucket;
 
+/* Hash table with a predefined table size which will never be changed
+    this may cause performance decreasing if amount of keys is much greater
+    then the table size
+*/
 class FixedHashTable {
 public:
   FixedHashTable(size_t size);

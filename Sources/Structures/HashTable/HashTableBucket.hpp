@@ -20,12 +20,12 @@ public:
   
 #ifdef DEBUG
   HashTableBucket() {
-    ++s_counter;
+    ++s_allocations_count;
   }
   ~HashTableBucket() {
-    --s_counter;
+    --s_allocations_count;
   }
-  static long s_counter;
+  static long s_allocations_count;
 #endif
 };
 

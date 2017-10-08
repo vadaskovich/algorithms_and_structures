@@ -7,7 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		1B492F1A1F8779C20050E7E8 /* BinaryTree.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1B492F181F8779C20050E7E8 /* BinaryTree.cpp */; };
 		1B492F1C1F8779E90050E7E8 /* BinaryTree_Test.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1B492F1B1F8779E90050E7E8 /* BinaryTree_Test.cpp */; };
 /* End PBXBuildFile section */
 
@@ -25,7 +24,6 @@
 
 /* Begin PBXFileReference section */
 		1B492F0E1F87799E0050E7E8 /* BinaryTree_Test */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = BinaryTree_Test; sourceTree = BUILT_PRODUCTS_DIR; };
-		1B492F181F8779C20050E7E8 /* BinaryTree.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = BinaryTree.cpp; path = ../../Sources/Structures/BinaryTree/BinaryTree.cpp; sourceTree = "<group>"; };
 		1B492F191F8779C20050E7E8 /* BinaryTree.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = BinaryTree.hpp; path = ../../Sources/Structures/BinaryTree/BinaryTree.hpp; sourceTree = "<group>"; };
 		1B492F1B1F8779E90050E7E8 /* BinaryTree_Test.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = BinaryTree_Test.cpp; path = ../../Tests/BinaryTree_Test.cpp; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -44,7 +42,6 @@
 		1B492F051F87799E0050E7E8 = {
 			isa = PBXGroup;
 			children = (
-				1B492F181F8779C20050E7E8 /* BinaryTree.cpp */,
 				1B492F191F8779C20050E7E8 /* BinaryTree.hpp */,
 				1B492F1B1F8779E90050E7E8 /* BinaryTree_Test.cpp */,
 				1B492F0F1F87799E0050E7E8 /* Products */,
@@ -118,7 +115,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				1B492F1C1F8779E90050E7E8 /* BinaryTree_Test.cpp in Sources */,
-				1B492F1A1F8779C20050E7E8 /* BinaryTree.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

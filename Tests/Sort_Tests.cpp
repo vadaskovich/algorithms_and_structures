@@ -18,6 +18,7 @@
 #include "Algorithms/Sort/SortInsertion.hpp"
 #include "Algorithms/Sort/SortMerge.hpp"
 #include "Algorithms/Sort/SortBinaryTree.hpp"
+#include "Algorithms/Sort/SortBtree.hpp"
 
 void ReportAlgorithmFinish(const std::string& algorithm_name, Counter& counter, const std::vector<int>& result_sorted, const std::vector<int>& data_for_comparison);
 void FillTestData(std::vector<int>& data);
@@ -71,12 +72,20 @@ int main(int argc, const char * argv[]) {
     ReportAlgorithmFinish("Merge", counter, sortMergeData, dataSortedPattern);
   }
   
-  // Binary Tree
+  // Binary Tree (without balancing)
   {
     std::vector<int> sortBinaryTreeData = data;
     counter.tick();
     Sort::BinaryTreeSort(sortBinaryTreeData);
-    ReportAlgorithmFinish("Binary Tree", counter, sortBinaryTreeData, dataSortedPattern);
+    ReportAlgorithmFinish("Binary Tree (Unbalancing)", counter, sortBinaryTreeData, dataSortedPattern);
+  }
+  
+  // BTree
+  {
+    std::vector<int> sortBTreeData = data;
+    counter.tick();
+    Sort::BTreeSort(sortBTreeData);
+    ReportAlgorithmFinish("B-Tree", counter, sortBTreeData, dataSortedPattern);
   }
   return 0;
 }
@@ -95,7 +104,7 @@ void ReportAlgorithmFinish
   bool sizesAreEqual = resultSorted.size() == dataForComparison.size();
   assert(sizesAreEqual);
   
-  bool sortingIsSame = memcmp(&resultSorted[0], &dataForComparison[0], dataForComparison.size()) == 0;
+  bool sortingIsSame = memcmp(&resultSorted[0], &dataForComparison[0], dataForComparison.size() * sizeof(int)) == 0;
   assert(sortingIsSame);
 }
 
@@ -104,7 +113,7 @@ void FillTestData(std::vector<int>& data) {
   data =
   //{0, 5, 10, 9, 0, 4, 5};
   {0, 10, -999, 256, 123123, 0, 0, 1, 1, 5, 1, 5, 1, 5, 1, 65, INT_MAX, INT_MIN};
-  
+  //{0, 10, 0, 10, 0, 0, 1, 1, 1, 5, 1, 5, 1, 5, 65, -999};
   const size_t random_values_count =
   //0;
   30000;

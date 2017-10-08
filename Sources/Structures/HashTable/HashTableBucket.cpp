@@ -9,5 +9,5 @@
 #include "HashTableBucket.hpp"
 
 #ifdef DEBUG
-long HashTableBucket::s_counter = 0;
+long HashTableBucket::s_allocations_count = 0;
 #endif

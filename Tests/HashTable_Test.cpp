@@ -24,6 +24,10 @@ void testHashTable() {
     table["3"] = "three";
     
     table["4"] = "four";
+    table["4"] = "four";
+    table["4"] = "four";
+    
+    assert(HashTableBucket::s_allocations_count == 4);
     
     std::string three_value = table["3"];
     assert(three_value == "three");
@@ -32,8 +36,7 @@ void testHashTable() {
   }
   
   // --
-  long counter = HashTableBucket::s_counter;
-  assert(counter == 0);
+  assert(HashTableBucket::s_allocations_count == 0);
 }
 
 int main(int argc, const char * argv[]) {

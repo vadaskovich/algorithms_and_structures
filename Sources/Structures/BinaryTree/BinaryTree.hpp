@@ -1,6 +1,6 @@
 //
 //  BinaryTree.hpp
-//  BinaryTree_Test
+//  BinaryTree
 //
 //  Created by Bro on 10/6/17.
 //  Copyright © 2017 vadaskovich. All rights reserved.
