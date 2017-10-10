@@ -7,6 +7,8 @@
 //
 
 #include <map>
+#include <functional>
+#include <iostream>
 
 #include "Structures/Graph/Graph.hpp"
 
@@ -22,14 +24,16 @@ struct NodeCoordinate {
   int y = 0;
 };
 
-bool operator<(const NodeCoordinate& c1, const NodeCoordinate& c2) {
-  return c1.x < c2.x || c1.y < c2.y;
-}
+typedef GraphNode<NodeCoordinate> Node;
+
+bool operator<(const NodeCoordinate& c1, const NodeCoordinate& c2);
 
 typedef GraphNode<NodeCoordinate> Node;
 bool operator<(const Node::ptr_weak& n1, const Node::ptr_weak& n2);
 
-void ExploreGraph();
+typedef std::function<void(Node::ptr node)> NodeCallback;
+
+void TraverseAllGraph(const Node::ptr startNode, const NodeCallback& nodeCallback);
 
 int main(int argc, const char* argv[]) {
   BMP maze;
@@ -43,6 +47,8 @@ int main(int argc, const char* argv[]) {
     for (size_t y = 0; y < maze.height(); ++y) {
       RGBColor cellColor = maze.getColor(x, y);
       if (cellColor.r == 255 && cellColor.g == 255 && cellColor.b == 255) {
+        
+        // (y, x) because pixels are stored so
         NodeCoordinate coordinate(x, y);
         
         Node::ptr node = Node::Create();
@@ -68,57 +74,37 @@ int main(int argc, const char* argv[]) {
       node->neighborList.insert(nodeTable[rightCellCoordinate]);
     }
     
-    NodeCoordinate upCellCoordinate = NodeCoordinate(coordinate.x, coordinate.y + 1);
+    NodeCoordinate upCellCoordinate = NodeCoordinate(coordinate.x, coordinate.y - 1);
     if (nodeTable.count(upCellCoordinate)) {
       node->neighborList.insert(nodeTable[upCellCoordinate]);
     }
     
-    NodeCoordinate bottomCellCoordinate = NodeCoordinate(coordinate.x, coordinate.y - 1);
+    NodeCoordinate bottomCellCoordinate = NodeCoordinate(coordinate.x, coordinate.y + 1);
     if (nodeTable.count(bottomCellCoordinate)) {
       node->neighborList.insert(nodeTable[bottomCellCoordinate]);
     }
   }
-
   
-  // --
-  {
-    int const maxStepsCount = 100;
+  // Traverse all nodes
+  BMP mazeAllTraversed = maze;
+  Node::ptr startNode = nodeTable[NodeCoordinate(0, 0)];
+  RGBColor trackColor(255, 0, 0);
+  TraverseAllGraph(startNode, [&mazeAllTraversed, &trackColor](Node::ptr node) {
+    NodeCoordinate coordinate = node->data;
+    mazeAllTraversed.setColor(coordinate.x, coordinate.y, trackColor);
     
-    std::set<NodeCoordinate> visitedPoints;
-    
-    int stepNumber = 0;
-    Node::ptr traverseNode = nodeTable[NodeCoordinate(0, 0)];
-    while (traverseNode) {
-      NodeCoordinate coordinate = traverseNode->data;
-      maze.setColor(coordinate.x, coordinate.y, RGBColor(255, 0, 0));
-      
-      Node::ptr nextNotVisitedNode = nullptr;
-      for (Node::ptr_weak nodeWeak : traverseNode->neighborList) {
-        Node::ptr node = nodeWeak.lock();
-        if (!visitedPoints.count(node->data)) {
-          nextNotVisitedNode = node;
-          break;
-        }
-      }
-      
-      traverseNode = nextNotVisitedNode;
-      
-      visitedPoints.insert(coordinate);
-      
-      ++stepNumber;
-      if (stepNumber == maxStepsCount) {
-        break;
-      }
-    }
-  }
-
-  maze.save("../../../Tests/Resources/maze_1_out.bmp");
+    trackColor.b += 2;
+    trackColor.g += 2;
+  });
+  mazeAllTraversed.save("../../../Tests/Resources/maze_1_all.bmp");
   
   return 0;
 }
 
+bool operator<(const NodeCoordinate& c1, const NodeCoordinate& c2) {
+  return c1.x < c2.x || (c1.x == c2.x && c1.y < c2.y);
+}
 
-typedef GraphNode<NodeCoordinate> Node;
 bool operator<(const Node::ptr_weak& n1, const Node::ptr_weak& n2) {
   Node::ptr node1Strong = n1.lock();
   Node::ptr node2Strong = n2.lock();
@@ -128,5 +114,27 @@ bool operator<(const Node::ptr_weak& n1, const Node::ptr_weak& n2) {
   } else {
     return false;
   }
+}
+
+void __TraverseAllGraph(const Node::ptr node_in, const NodeCallback& nodeCallback, std::set<NodeCoordinate>& visited) {
+  if (visited.count(node_in->data)) {
+    return;
+  }
+  
+  // visit input node
+  nodeCallback(node_in);
+  visited.insert(node_in->data);
+  
+  //
+  Node::ptr nextNotVisitedNode = nullptr;
+  for (Node::ptr_weak nodeWeak : node_in->neighborList) {
+    Node::ptr node = nodeWeak.lock();
+    __TraverseAllGraph(node, nodeCallback, visited);
+  }
+}
+
+void TraverseAllGraph(const Node::ptr node, const NodeCallback& nodeCallback) {
+  std::set<NodeCoordinate> visited;
+  __TraverseAllGraph(node, nodeCallback, visited);
 }
 
