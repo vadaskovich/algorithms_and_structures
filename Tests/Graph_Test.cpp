@@ -9,134 +9,73 @@
 #include <map>
 #include <functional>
 #include <iostream>
+#include <deque>
 #include <queue>
+#include <assert.h>
 
+#include "Common/throw_assert.hpp"
+#include "Algorithms/Graph/GraphTraversal.hpp"
 #include "Structures/Graph/Graph.hpp"
 
 #include "Common/BMP.hpp"
+#include "Algorithms/Graph/BMPToGraph.hpp"
 
-struct NodeCoordinate {
-  NodeCoordinate() {}
-  NodeCoordinate(int x_, int y_)
-  : x(x_),
-    y(y_)
-  { }
-  int x = 0;
-  int y = 0;
-};
-
-typedef GraphNode<NodeCoordinate> Node;
-
-bool operator<(const NodeCoordinate& c1, const NodeCoordinate& c2);
-
-typedef GraphNode<NodeCoordinate> Node;
-bool operator<(const Node::ptr_weak& n1, const Node::ptr_weak& n2);
-
-typedef std::function<void(Node::ptr node)> NodeCallback;
-
-void TraverseAllGraph(const Node::ptr startNode, const NodeCallback& nodeCallback);
-
-int main(int argc, const char* argv[]) {
+int MazeTest() {
+  // try to read bmp into maze structure, considering white pixels as nodes
   BMP maze;
-  maze.read("../../../Tests/Resources/maze_1.bmp");
   
-  std::queue<int> q;
+  const char* mazeFilePath = "../../../Tests/Resources/maze_1.bmp";
+  bool mazeFileReadResult = maze.read(mazeFilePath);
+  throw_assert_explain(mazeFileReadResult, "can not read the file at path: %s", mazeFilePath);
   
+  // --
   std::map<NodeCoordinate, Node::ptr> nodeTable;
+  BuildGraphForMaze(maze, nodeTable);
   
-  // Create list of existing nodes (white dots of the maze)
-  for (size_t x = 0; x < maze.width(); ++x) {
-    for (size_t y = 0; y < maze.height(); ++y) {
-      RGBColor cellColor = maze.getColor(x, y);
-      if (cellColor.r == 255 && cellColor.g == 255 && cellColor.b == 255) {
-        
-        // (y, x) because pixels are stored so
-        NodeCoordinate coordinate(x, y);
-        
-        Node::ptr node = Node::Create();
-        node->data = coordinate;
-        nodeTable[coordinate] = node;
-      }
-    }
-  }
-  
-  // Build graph (i.e. links between nodes)
-  for (auto& nodePair : nodeTable) {
-    const Node::ptr node = nodePair.second;
-    const NodeCoordinate& coordinate = nodePair.first;
-    
-    // --
-    NodeCoordinate leftCellCoordinate = NodeCoordinate(coordinate.x - 1, coordinate.y);
-    if (nodeTable.count(leftCellCoordinate)) {
-      node->neighborList.insert(nodeTable[leftCellCoordinate]);
-    }
-    
-    NodeCoordinate rightCellCoordinate = NodeCoordinate(coordinate.x + 1, coordinate.y);
-    if (nodeTable.count(rightCellCoordinate)) {
-      node->neighborList.insert(nodeTable[rightCellCoordinate]);
-    }
-    
-    NodeCoordinate upCellCoordinate = NodeCoordinate(coordinate.x, coordinate.y - 1);
-    if (nodeTable.count(upCellCoordinate)) {
-      node->neighborList.insert(nodeTable[upCellCoordinate]);
-    }
-    
-    NodeCoordinate bottomCellCoordinate = NodeCoordinate(coordinate.x, coordinate.y + 1);
-    if (nodeTable.count(bottomCellCoordinate)) {
-      node->neighborList.insert(nodeTable[bottomCellCoordinate]);
-    }
-  }
-  
-  // Traverse all nodes
+  // Visit all nodes and paint them
   BMP mazeAllTraversed = maze;
-  Node::ptr startNode = nodeTable[NodeCoordinate(0, 0)];
+  NodeCoordinate coordinateStartFrom(0, 0);
+  Node::ptr startNode = nodeTable[coordinateStartFrom];
+  throw_assert_explain(startNode, "there is no such node for coordinate: [%d, %d]", coordinateStartFrom.x, coordinateStartFrom.y);
+  
   RGBColor trackColor(255, 0, 0);
-  TraverseAllGraph(startNode, [&mazeAllTraversed, &trackColor](Node::ptr node) {
+  GraphTraversal<NodeCoordinate>::TraverseAllGraph
+  (startNode, [&mazeAllTraversed, &trackColor](Node::ptr node) {
+    if (!node) return;
+    
     NodeCoordinate coordinate = node->data;
     mazeAllTraversed.setColor(coordinate.x, coordinate.y, trackColor);
-    
-    trackColor.b += 2;
-    trackColor.g += 2;
   });
   mazeAllTraversed.save("../../../Tests/Resources/maze_1_all.bmp");
+  
+  // Try to find a shortest way between points in the given maze
+  std::vector<Node::ptr> shortestWay;
+  
+  NodeCoordinate coordinateAtStart(0, 1);
+  NodeCoordinate coordinateAtEnd(maze.width() - 1, maze.height() - 1);
+  Node::ptr nodeStartFrom = nodeTable[coordinateAtStart];
+  Node::ptr nodeGoTo      = nodeTable[coordinateAtEnd];
+  
+  throw_assert_explain(nodeStartFrom, "there is no such node for start point: [%d, %d]", coordinateAtStart.x, coordinateAtStart.y);
+  throw_assert_explain(nodeGoTo, "there is no such node for end point: [%d, %d]", coordinateAtEnd.x, coordinateAtEnd.y);
+  
+  GraphTraversal<NodeCoordinate>::FindAWay(nodeStartFrom, nodeGoTo, shortestWay);
+  
+  BMP mazePath = maze;
+  for (Node::ptr node : shortestWay) {
+    mazePath.setColor(node->data.x, node->data.y, RGBColor(255, 0, 0));
+  }
+  mazePath.save("../../../Tests/Resources/maze_1_path.bmp");
+  // --
   
   return 0;
 }
 
-bool operator<(const NodeCoordinate& c1, const NodeCoordinate& c2) {
-  return c1.x < c2.x || (c1.x == c2.x && c1.y < c2.y);
-}
-
-bool operator<(const Node::ptr_weak& n1, const Node::ptr_weak& n2) {
-  Node::ptr node1Strong = n1.lock();
-  Node::ptr node2Strong = n2.lock();
-  
-  if (node1Strong && node2Strong) {
-    return node1Strong->data < node2Strong->data;
-  } else {
-    return false;
+int main(int argc, const char* argv[]) {
+  try {
+    MazeTest();
+  } catch (std::exception& e) {
+    std::cout << "Error with MazeTest: " << e.what() << std::endl;
   }
+  return 0;
 }
-
-void __TraverseAllGraph(const Node::ptr node_in, const NodeCallback& nodeCallback, std::set<NodeCoordinate>& visited) {
-  if (visited.count(node_in->data)) {
-    return;
-  }
-  
-  // visit input node
-  nodeCallback(node_in);
-  visited.insert(node_in->data);
-  
-  //
-  Node::ptr nextNotVisitedNode = nullptr;
-  for (Node::ptr_weak nodeWeak : node_in->neighborList) {
-    Node::ptr node = nodeWeak.lock();
-    __TraverseAllGraph(node, nodeCallback, visited);
-  }
-}
-
-void TraverseAllGraph(const Node::ptr node, const NodeCallback& nodeCallback) {
-  std::set<NodeCoordinate> visited;
-  __TraverseAllGraph(node, nodeCallback, visited);
-}
-
