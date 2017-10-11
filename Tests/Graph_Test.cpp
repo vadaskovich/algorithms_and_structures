@@ -9,6 +9,7 @@
 #include <map>
 #include <functional>
 #include <iostream>
+#include <queue>
 
 #include "Structures/Graph/Graph.hpp"
 
@@ -39,6 +40,7 @@ int main(int argc, const char* argv[]) {
   BMP maze;
   maze.read("../../../Tests/Resources/maze_1.bmp");
   
+  std::queue<int> q;
   
   std::map<NodeCoordinate, Node::ptr> nodeTable;
   

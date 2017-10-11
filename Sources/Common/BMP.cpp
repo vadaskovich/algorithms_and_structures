@@ -10,11 +10,11 @@
 #include <fstream>
 #include <iostream>
 
+#include "throw_assert.hpp"
+
 #include "BMP.hpp"
 
-BMP::~BMP() {
-  
-}
+BMP::~BMP() {}
 
 RGBColor BMP::getColor(int x, int y) const {
   if (m_data.empty()) {
@@ -58,13 +58,13 @@ void BMP::__getIndicesForPixel(int x, int y, size_t& r_out, size_t& g_out, size_
       x <= m_width && y <= m_height)
   {
     size_t pixelDataSize = m_colorDepth / (sizeof(char) * 8);
-    r_out = m_width * x * pixelDataSize + y * pixelDataSize + 2;
+    r_out = m_width * y * pixelDataSize + x * pixelDataSize + 2;
     g_out = r_out - 1;//m_width * x + y * pixelDataSize + 1;
     b_out = r_out - 2;//m_width * x + y * pixelDataSize + 0;
   }
 }
 
-void BMP::save(const char* filepath) {
+void BMP::save(const char* filepath) const {
   if (m_data.empty()) {
     throw std::runtime_error("no data to save");
   }
@@ -83,13 +83,13 @@ bool BMP::read(const char* filepath) {
   static constexpr size_t HEADER_SIZE = 54;
   
   std::ifstream bmp(filepath, std::ios::binary);
-  
-  if (!bmp.is_open()) {
-    throw std::runtime_error("can not read the file");
-  }
-  
+  throw_assert_explain(bmp.is_open(), "can not read the file: %s", filepath);
+
   std::vector<char> header(HEADER_SIZE);
   bmp.read(header.data(), header.size());
+  
+  bool headerIsFine = header.size() >= 2 && header[0] == 'B' && header[1] == 'M';
+  throw_assert_explain(headerIsFine, "header is not of BMP file");
   
   m_header = header;
   
@@ -111,7 +111,7 @@ bool BMP::read(const char* filepath) {
   
   int dataSize =
   fileSize - HEADER_SIZE - offsetDataSize;
-  //((width * depth + 3) & (~3)) * height;
+
   std::vector<char> img;
   img.resize(dataSize);
   bmp.read(img.data(), img.size());
