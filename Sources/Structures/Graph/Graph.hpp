@@ -12,6 +12,7 @@
 #include <memory> // need for shared_ptr and weak_ptr
 #include <set> // for keeping list of node's neighbors
 
+
 // A graph is supposed to be a very complicated thing, but all we have to have is graph nodes and links between them
 template <typename __DataType>
 class GraphNodeImpl {
