@@ -20,6 +20,7 @@
 #include "Common/BMP.hpp"
 #include "Algorithms/Graph/BMPToGraph.hpp"
 
+
 int MazeTest() {
   // try to read bmp into maze structure, considering white pixels as nodes
   BMP maze;
