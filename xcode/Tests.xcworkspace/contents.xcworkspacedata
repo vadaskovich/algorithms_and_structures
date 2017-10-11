@@ -5,6 +5,9 @@
       location = "container:"
       name = "Structures">
       <FileRef
+         location = "group:Graph_Test/Graph_Test.xcodeproj">
+      </FileRef>
+      <FileRef
          location = "group:BTree_Test/BTree_Test.xcodeproj">
       </FileRef>
       <FileRef
