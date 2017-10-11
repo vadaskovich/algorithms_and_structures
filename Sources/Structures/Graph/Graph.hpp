@@ -9,15 +9,14 @@
 #ifndef Graph_hpp
 #define Graph_hpp
 
-#include <memory>
-#include <vector>
-#include <set>
+#include <memory> // need for shared_ptr and weak_ptr
+#include <set> // for keeping list of node's neighbors
 
-
+// A graph is supposed to be a very complicated thing, but all we have to have is graph nodes and links between them
 template <typename __DataType>
-class GraphNode {
+class GraphNodeImpl {
 public:
-  typedef GraphNode<__DataType> __GrapeNodeConcrete;
+  typedef GraphNodeImpl<__DataType> __GrapeNodeConcrete;
   typedef std::shared_ptr<__GrapeNodeConcrete> ptr;
   typedef std::weak_ptr<__GrapeNodeConcrete> ptr_weak;
   
@@ -25,8 +24,8 @@ public:
   static __GrapeNodeConcrete::ptr Create(Args&& ... args) {
     return std::make_shared<__GrapeNodeConcrete>(std::forward<Args>(args)...);
   }
-  GraphNode() {}
-  ~GraphNode() {}
+  GraphNodeImpl() {}
+  ~GraphNodeImpl() {}
   
   std::set<__GrapeNodeConcrete::ptr_weak> neighborList;
   __DataType data;
