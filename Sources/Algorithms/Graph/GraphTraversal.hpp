@@ -23,27 +23,27 @@ public:
   typedef GraphNodeImpl<__NodeDataType> __Node;
   typedef typename __Node::ptr __NodePtr;
   typedef typename __Node::ptr_weak __NodePtrWeak;
-  typedef std::function<void(const __NodePtr node, size_t depth)> __NodeIndexCallback;
+  typedef std::function<void(const __NodePtr node, int depth)> __NodeIndexCallback;
   typedef std::function<void(__NodePtr node)> NodeCallback;
   
   static void FindAWay(const __NodePtr nodeStart, const __NodePtr nodeEnd, std::vector<__NodePtr>& result) {
     assert(nodeStart);
     assert(nodeEnd);
     
-    std::multimap<size_t, __NodePtr> nodeDepthAccordance;
+    std::multimap<int, __NodePtr> nodeDepthAccordance;
     
     // Here we search breadth-first kind of search and get depths of each node
     // we keep that pair in external multimap structure to not touch the nodes
     BreadthSearchFirst
     (nodeStart, nodeEnd,
-     [&nodeDepthAccordance, &result, &nodeEnd](const __NodePtr node, size_t depth)
+     [&nodeDepthAccordance, &result, &nodeEnd](const __NodePtr node, int depth)
      {
        nodeDepthAccordance.insert(std::make_pair(depth, node));
      });
     
     // Search for the end node. Here we answer the question: "Have we reached the desired node?"
     bool reachedTheEnd = false;
-    size_t depthOfTheEnd = -1;
+    int depthOfTheEnd = -1;
     // Find the endNode we want to reach
     for (auto& data : nodeDepthAccordance) {
       if (data.second == nodeEnd) {
@@ -58,7 +58,7 @@ public:
       std::vector<__NodePtr> reversePath;
       reversePath.reserve(depthOfTheEnd);
       
-      typedef typename std::multimap<size_t, __NodePtr>::iterator MMAPIterator;
+      typedef typename std::multimap<int, __NodePtr>::iterator MMAPIterator;
       
       assert(depthOfTheEnd != -1);
       reversePath.push_back(nodeEnd);
@@ -93,7 +93,7 @@ public:
     std::set<__NodePtr> visited;
     
     // Depth is the shortest length to reach a certain node
-    size_t depth = 0;
+    int depth = 0;
     
     //
     callback(nodeStart, depth);

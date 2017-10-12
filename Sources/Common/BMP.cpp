@@ -65,13 +65,9 @@ void BMP::__getIndicesForPixel(int x, int y, size_t& r_out, size_t& g_out, size_
 }
 
 void BMP::save(const char* filepath) const {
-  if (m_data.empty()) {
-    throw std::runtime_error("no data to save");
-  }
-  if (m_header.empty()) {
-    throw std::runtime_error("header is empty");
-  }
-  
+  throw_assert_explain(!m_data.empty(), "[BMP] no data to save");
+  throw_assert_explain(!m_header.empty(), "[BMP] no header in bmp to save");
+
   std::ofstream file(filepath, std::ios::binary);
   
   file.write(&m_header[0], m_header.size() * sizeof(char));
@@ -80,8 +76,8 @@ void BMP::save(const char* filepath) const {
 }
 
 bool BMP::read(const char* filepath) {
-  static constexpr size_t HEADER_SIZE = 54;
-  
+  static constexpr int HEADER_SIZE = 54;
+
   std::ifstream bmp(filepath, std::ios::binary);
   throw_assert_explain(bmp.is_open(), "can not read the file: %s", filepath);
 
@@ -104,13 +100,12 @@ bool BMP::read(const char* filepath) {
   m_width = width;
   m_height = height;
   
-  size_t offsetDataSize = dataOffset - HEADER_SIZE;
+  int offsetDataSize = dataOffset - HEADER_SIZE;
   m_offsetData.resize(offsetDataSize);
   
   bmp.read(m_offsetData.data(), m_offsetData.size());
   
-  int dataSize =
-  fileSize - HEADER_SIZE - offsetDataSize;
+  int dataSize = fileSize - HEADER_SIZE - offsetDataSize;
 
   std::vector<char> img;
   img.resize(dataSize);
