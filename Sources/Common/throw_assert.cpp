@@ -12,20 +12,49 @@
 
 #include "throw_assert.hpp"
 
-// I really can not say whether it is safe or not
-void __throw_assert(bool condition, const char* conditionString, ...) {
+void __throw_assert(bool condition, const char* conditionString) {
   if (condition == false) {
-    char format_str[256];
-    char message_str[256];
-  
-    va_list args;
-    
-    va_start(args, conditionString);
-    vsnprintf(format_str, 256, "%s", args);
-    vsnprintf(message_str, 256, format_str, args);
-    va_end(args);
+    if (!conditionString) {
+      throw std::runtime_error("Assertion failed");
+    } else {
+      char message_str[256];
+      message_str[0] = '\0';
+      
+      snprintf(message_str, 256, "Assertion failed: %s", conditionString);
+      throw std::runtime_error(message_str);
+    }
+  }
+}
 
-    throw std::runtime_error(message_str);
+// I really can not say whether it is safe or not
+void __throw_assert_explain(bool condition, const char* conditionString, int additionalParametersCount, const char* format, ...) {
+  if (condition == false) {
+    if (!conditionString) {
+      throw std::runtime_error("Assertion failed");
+    }
+    if (additionalParametersCount == 0) {
+      char message_str[256];
+      message_str[0] = '\0';
+      
+      if (format) {
+        snprintf(message_str, 256, "Assertion failed: %s '%s'", conditionString, format);
+        throw std::runtime_error(message_str);
+      } else {
+        snprintf(message_str, 256, "Assertion failed: %s", conditionString);
+        throw std::runtime_error(message_str);
+      }
+    } else {
+      char message_str[256];
+      message_str[0] = '\0';
+      
+      va_list args;
+      
+      va_start(args, format);
+      vsnprintf(message_str, 256, format, args);
+      va_end(args);
+      
+      throw std::runtime_error(message_str);
+    }
   }
 }
 
